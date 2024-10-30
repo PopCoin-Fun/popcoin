@@ -1,0 +1,22 @@
+<div class="card mt-1  " *ngIf="comment">
+    <div class="card-header d-flex justify-content-start" style="background-color: aliceblue;">
+        <div class="mx-2"> 
+            <img [src]="comment.userDisplayPicture??''" class="img-fluid user-avatar" alt=""/> 
+            {{comment.userDisplayName}}
+        </div>
+
+        <div  class="mx-2">{{comment.createdOn | date}}</div>
+
+        <div>
+            <span *ngIf="comment.tradeType==0" class="badge rounded-pill text-bg-success px-2">Bought {{comment.amount}} {{marketCapSymbol??""}}</span>
+            <span *ngIf="comment.tradeType==1" class="badge rounded-pill text-bg-danger px-2">Sold {{comment.amount}} {{tokenSymbol??""}}</span>
+
+        </div>
+
+
+    </div>
+    
+    <div class="card-body">
+        <p class="card-text">{{comment.text}}</p>
+    </div>
+</div>

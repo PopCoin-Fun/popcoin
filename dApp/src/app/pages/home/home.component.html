@@ -1,0 +1,33 @@
+<div class="row m-2 p-2">
+    
+
+    <div 
+        class="col-12 h-75 d-flex justify-content-center align-items-center" 
+        *ngIf="!coins"
+        style="height: 50vh !important;"
+    >
+        <h3>Loading ...</h3>
+    </div>
+
+    <!-- <div 
+        class="col-12 h-75 d-flex justify-content-center align-items-center" 
+        *ngIf="error"
+        style="height: 50vh !important;"
+    >
+        <h3>Error ...</h3>
+    </div> -->
+    
+    <div class="col-12  " *ngIf="coins">
+        <div *ngIf="coins.length==0">   
+            No Coins to Display
+        </div>
+                
+        <div class="row" *ngIf="coins.length>0">
+            @for (coin of coins; track coin) {
+                <app-coin-item [coin]="coin"></app-coin-item>
+            }
+            
+        </div>
+    </div>
+</div>
+

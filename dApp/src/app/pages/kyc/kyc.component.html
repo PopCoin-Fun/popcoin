@@ -1,0 +1,107 @@
+<div class="row">
+    
+    <div class="col-12">
+      <div class="container mt-5">
+        <div class="card shadow-lg">
+          <div class="card-header bg-primary text-white text-center">
+            <h3 class="py-2 mb-0">Know Your Customer (KYC) Verification</h3>
+            <p class="mt-2 mb-0">Please provide the necessary BVN details to complete the KYC process</p>
+            <p class="mt-0 mb-0">We will compare your BVN Information with the informtion on record to see if it matches</p>
+          </div>
+          <div class="card-body p-4">
+            <form [formGroup]="kycForm" (ngSubmit)="checkKYC()" >
+              <!-- BVN Input -->
+              <div class="mb-4">
+                <label for="bvn" class="form-label">Bank Verification Number (BVN) 
+                  <i class="bi bi-info-circle" title="Your BVN is an 11-digit number issued by your bank."></i>
+                </label>
+                <input 
+                  id="bvn" 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Enter your 8-digit BVN" 
+                  formControlName="bvn" [readOnly]="kycCompleted">
+                <div *ngIf="kycForm.get('bvn')?.invalid && kycForm.get('bvn')?.touched" class="text-danger">
+                  Please enter a valid 8-digit BVN.
+                </div>
+              </div>
+      
+              <!-- Surname Input -->
+              <div class="mb-4">
+                <label for="surname" class="form-label">Surname 
+                  <i class="bi bi-info-circle" title="Enter your surname as registered in your BVN details."></i>
+                </label>
+                <input 
+                  id="surname" 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Enter your surname" 
+                  formControlName="surname" [readOnly]="kycCompleted">
+                <div *ngIf="kycForm.get('surname')?.invalid && kycForm.get('surname')?.touched" class="text-danger">
+                  Please enter your surname.
+                </div>
+              </div>
+      
+              <!-- First Name Input -->
+              <div class="mb-4">
+                <label for="firstName" class="form-label">First Name 
+                  <i class="bi bi-info-circle" title="Enter your first name as registered in your BVN details."></i>
+                </label>
+                <input 
+                  id="firstName" 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Enter your first name" 
+                  formControlName="firstName" [readOnly]="kycCompleted">
+                <div *ngIf="kycForm.get('firstName')?.invalid && kycForm.get('firstName')?.touched" class="text-danger">
+                  Please enter your first name.
+                </div>
+              </div>
+      
+              <!-- Date of Birth Input -->
+              <div class="mb-4">
+                <label for="dob" class="form-label">Date of Birth (YYYY/MM/DD) 
+                  <i class="bi bi-info-circle" title="Use the date format YYYY/MM/DD as registered in your BVN details."></i>
+                </label>
+                <input 
+                  id="dob" 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Enter your date of birth" 
+                  formControlName="dob" [readOnly]="kycCompleted">
+                <div *ngIf="kycForm.get('dob')?.invalid && kycForm.get('dob')?.touched" class="text-danger">
+                  Please enter your date of birth in YYYY/MM/DD format.
+                </div>
+              </div>
+      
+              <!-- Submit Button -->
+              <button 
+                type="submit" 
+                class="btn btn-primary btn-lg w-100" 
+                [disabled]="kycForm.invalid || kycCompleted">
+                Verify
+              </button>
+
+              <!-- Submit Button -->
+              <button 
+                type="button" 
+                (click)="attest()"
+                class="btn btn-success btn-lg w-100 my-2" 
+                [disabled]="kycForm.invalid || (kycCompleted!== true)">
+                Sign and Attest your KYC OnChain
+              </button>
+            </form>
+          </div>
+        </div>
+      
+        <!-- KYC Result Message -->
+        <div *ngIf="kycCompleted === true" class="alert alert-success mt-4 text-center">
+          <i class="bi bi-check-circle-fill"></i> KYC completed successfully. Now attest your KYC onchain.
+        </div>
+        <div *ngIf="kycCompleted === false" class="alert alert-danger mt-4 text-center">
+          <i class="bi bi-x-circle-fill"></i> KYC failed. Please check your details.
+        </div>
+      </div>
+      
+    </div>
+</div>

@@ -1,0 +1,167 @@
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+<ngx-spinner type="ball-scale-multiple" size = "medium"><p style="color: black" > Working... </p></ngx-spinner>
+
+<main class="main container-fluid ">
+
+  <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand " style="color: #dfdbf9; font-weight: 600;" [routerLink]="['/']">
+        <img src="/assets/logo.png" alt="logo" class="img-fluid" style="max-width: 60px;"> 
+        Pop Coin
+        
+      </a>
+      <button class="navbar-toggler" (click)="isMenuCollapsed = !isMenuCollapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" (click)="isMenuCollapsed = true" [routerLink]="['/']">Home</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" routerLink="/popping">Popping</a>
+          </li> -->
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" style=" cursor: pointer;" (click)="openHowItWorks()" >How it Works</a>
+          </li>
+        </ul>
+        <div class="d-flex justify-content-end align-items-center flex-wrap p-1 ">
+
+          <button (click)="isMenuCollapsed = true" [routerLink]="'/create'" [ngClass]="{'disabled':!(web3Service.account$ | async)}" [disabled]="!(web3Service.account$ | async)" class="btn btn-primary px-3 m-1">Create Meme Coin</button>
+          <!-- <button (click)="isMenuCollapsed = true" [routerLink]="'/ai-create'" [ngClass]="{'disabled':!(web3Service.account$ | async)}" [disabled]="!(web3Service.account$ | async)" class="btn btn-primary px-3 m-1">Create AI Meme Coin</button> -->
+
+          <!-- <button *ngIf="!(web3Service.account$ | async)" class="btn btn-primary px-2 m-1" (click)="connect()">Connect</button> -->
+          <a (click)="isMenuCollapsed = true" [routerLink]="['/coins/mine']" *ngIf="web3Service.account$ | async" class="btn btn-primary px-2 m-1">My Coins</a>
+
+          <button [routerLink]="'/profile'" *ngIf="web3Service.account$ | async" class="btn btn-primary px-2 m-1">View Profile</button>
+
+          <!-- <button *ngIf="web3Service.account$ | async" class="btn btn-primary px-2 m-1" (click)="disconnect(); isMenuCollapsed = true;">Disconnect</button> -->
+          
+          <div class="mt-1" >
+            <app-w3m-core-button-wrapper> </app-w3m-core-button-wrapper>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container-fluid ">
+    <div class="row  mt-3">
+      <div class="col-12 ">
+        <router-outlet />
+      </div>
+    </div>
+    
+  </div>
+
+
+
+  
+</main>
+
+
+
+
+
+
+<ng-template #signInModal let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Create 
+      Pop Coin Profile</h4>
+		
+	</div>
+	<div class="modal-body">
+		<div class="d-flex p-1 justify-content-center align-items-center">
+      <form [formGroup]="signupForm">
+        <div class="mb-3">
+            <label for="displayName" class="form-label">Display Name</label>
+            <input type="text" class="form-control" id="displayName" formControlName="displayName">
+
+            <div class="text-danger my-1" *ngIf="displayNameNotUnique == true">Display Name already taken</div>
+            <div *ngIf="signupForm.get('displayName')?.invalid && signupForm.get('displayName')?.touched"
+                class="text-danger mt-1">
+
+                
+
+                <div *ngIf="signupForm.get('displayName')?.hasError('required')">Display Name is required
+                </div>
+                <div *ngIf="signupForm.get('displayName')?.hasError('minlength')">Display Name must be at
+                    least 5 characters</div>
+                <div *ngIf="signupForm.get('displayName')?.hasError('maxlength')">Display Name cannot exceed
+                    50 characters</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="profilePicture" class="form-label">Profile Picture</label>
+            <input type="file" class="form-control" id="profilePicture" (change)="selectProfilePicture($event)">
+            <div class="my-1 alert alert-info"><small>Size: 480px x 480px </small></div>
+            <div  class="text-danger mt-1">
+                <div *ngIf="!currentProfilePicture">Profile Picture is
+                    required</div>
+                <div *ngIf="currentProfilePicture && invalidProfilePicture">
+                    Invalid File Type (only *.jpg, *.jpeg or *.png allowed)</div>
+            </div>
+        </div>
+        
+
+    </form>
+    </div>
+	</div>
+	<div class="modal-footer">
+    <div class="alert alert-info text-sm">
+      You will be required to Sign a Message with your Crypto Wallet to Sign in
+    </div>
+        <!-- <button (click)="modal.dismiss('dismiss')" class="btn btn-outline-dark">
+            Cancel
+        </button> -->
+    
+		<button type="button" [disabled]="invalidProfilePicture || displayNameNotUnique || signupForm.invalid" class="btn btn-primary" (click)="modal.close('signup')">Signup with Wallet </button>
+	</div>
+</ng-template>
+
+<ng-template #howItWorksModal let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title text-primary">How It Works</h4>
+		
+	</div>
+	<div class="modal-body">
+		<div class="d-flex p-1 justify-content-center align-items-center" style="color: #083f91">
+      <div>
+        <p>
+          PopCoin allows you to easily create fair-launch coins while reducing the risk of rug pulls.
+          Each coin on PopCoin is a fair-launch, no presale and no team allocation.
+
+          Dev/Founding Teams Can buy the coin just like any other buyer
+        </p>
+
+        <ul class="list-group"  style="color: #083f91">
+          <li class="list-group-item">Step 1: Choose a coin that appeals to you</li>
+          <li class="list-group-item">Step 2: Purchase the coin from the bonding curve</li>
+          <li class="list-group-item">Step 3: You can sell the coin anytime to secure your gains or mitigate losses</li>
+          <li class="list-group-item">Step 4: As more people buy through the bonding curve, the market cap grows to a target amount of @if(blockchain){<span>~{{blockchain.targetMarketCap |number:'0.0-0'}} {{chainNativeCurrencySymbol??''}}</span>}</li>
+          <li class="list-group-item">Step 5: At this point, the raised funds ({{chainNativeCurrencySymbol??''}}) worth of liquidity and remaining tokens are added to the DEX chosen and subsequently burned</li>
+        </ul>
+        
+      </div>
+    </div>
+	</div>
+	<div class="modal-footer">   
+    
+		<button type="button"  class="btn btn-primary" (click)="modal.close('')">Ok, I understand </button>
+	</div>
+</ng-template>
+
+

@@ -1,0 +1,21 @@
+<div class="card coin-card my-2" *ngIf="coin" [routerLink]="['/coins', coin.id]" >
+    <img [src]="coin.banner" class="card-img-top" alt="...">
+    <div class="card-body">
+        <div >
+            <h4>{{coin.name}} ({{coin.symbol}})</h4>
+            <h5 *ngIf="marketCap">MarketCap: {{coin.marketCap??marketCap | number: '0.0-8'}} {{marketCapSymbol}} </h5>
+            <p class="text-truncate">{{coin.description}}</p>
+
+            <h6>
+                Created by : 
+                <img [src]="coin.creatorDisplayPicture??''" class="img-fluid user-avatar" alt=""> 
+                {{coin.creatorDisplayName}}
+            </h6>
+            
+            <div class="d-flex justify-content-center ">
+                <a class="btn btn-primary px-5 w-100 " [routerLink]="['/coins', coin.id]">Visit</a>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    --bs-primary: #009688; /* Teal color */
+}
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+
+  
+.error, .text-danger, .field-required{
+    color: red !important;
+} 
+
+.user-avatar{
+    max-width: 1.5rem;
+}
+
+
+.text-purple{
+    color: $purple;
+      
+}
+
+.blue-300 { 
+    color: $blue-300;
+}
+
+.bg-blue-300 { 
+    color: #efefff;
+    background-color: #6ea8fe;
+}
+
+.text-white-muted{
+    color:rgb(191, 213, 244) !important;
+}
+

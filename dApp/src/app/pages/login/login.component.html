@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col d-flex justify-content-center align-items-center full-height" >
+
+        <div *ngIf="!account">
+            <div class="btn btn-primary px-3 py-2"  (click)="connect()">
+                Connect your Wallet to Start Login/Signup
+            </div>
+
+            <div class="mt-3 ps-2">
+                <h3>Login in 2 Steps</h3>
+                <ol>
+                    <li>Login with your Web3 Wallet</li>
+                    <li>Sign a Message with your wallet (you will be prompted)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="btn btn-primary  px-3 py-2" *ngIf="account && accountExists" (click)="signToLogin()">
+            NEXT: Sign with Wallet to Login/Signup
+        </div>
+
+        <div class="" *ngIf="account && !accountExists">
+            <form [formGroup]="signupForm" (ngSubmit)="submitSignup()">
+                <div class="mb-3">
+                    <label for="displayName" class="form-label">Display Name</label>
+                    <input type="text" class="form-control" id="displayName" formControlName="displayName">
+                    <div *ngIf="signupForm.get('displayName')?.invalid && signupForm.get('displayName')?.touched"
+                        class="text-danger mt-1">
+        
+                        <div *ngIf="displayNameNotUnique">Display Name already taken</div>
+        
+                        <div *ngIf="signupForm.get('displayName')?.hasError('required')">Display Name is required
+                        </div>
+                        <div *ngIf="signupForm.get('displayName')?.hasError('minlength')">Display Name must be at
+                            least 5 characters</div>
+                        <div *ngIf="signupForm.get('displayName')?.hasError('maxlength')">Display Name cannot exceed
+                            50 characters</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="profilePicture" class="form-label">Profile Picture</label>
+                    <input type="file" class="form-control" id="profilePicture" (change)="selectProfilePicture($event)">
+                    <div class="my-1 alert alert-info"><small>Size: 480px x 480px </small></div>
+                    <div  class="text-danger mt-1">
+                        <div *ngIf="!currentProfilePicture">Profile Picture is
+                            required</div>
+                        <div *ngIf="currentProfilePicture && invalidProfilePicture">
+                            Invalid File Type (only *.jpg, *.jpeg or *.png allowed)</div>
+                    </div>
+                </div>
+
+                <div >
+                    <button type="submit" [disabled]="invalidProfilePicture || displayNameNotUnique || signupForm.invalid" class="btn btn-primary" >Submit & Signup with Wallet </button>
+                </div>
+                
+        
+            </form>
+        </div>
+
+
+
+    </div>
+</div>

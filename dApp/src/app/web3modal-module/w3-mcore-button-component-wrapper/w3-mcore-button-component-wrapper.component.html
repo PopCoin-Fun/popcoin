@@ -1,0 +1,7 @@
+
+@if(!!(this.web3Service.account$| async )){
+    <w3m-account-button balance="show" />
+}
+@else{
+    <w3m-button balance="{{showBalance}}" [label]="labelText" > </w3m-button>
+}
